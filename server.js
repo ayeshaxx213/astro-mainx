@@ -14,7 +14,7 @@ const USERS = {
   }
 };
 
-// HTML loader
+// Website
 app.get("/load/main", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
@@ -46,7 +46,6 @@ app.post("/load/main", (req, res) => {
     });
   }
 
-  // First device binds to the account.
   if (user.hwid === null) {
     user.hwid = hwid;
   }
@@ -60,11 +59,8 @@ app.post("/load/main", (req, res) => {
 
   return res.json({
     success: true,
-    username,
-    message: "Authentication successful",
-    config: {
-      enabled: true
-    }
+    username: username,
+    message: "Authentication successful"
   });
 });
 
