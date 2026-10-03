@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>astro.MAIN</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="loader" class="loader-screen">
+    <div class="loader-box">
+      <div class="loader-title">astro.MAIN</div>
+      <div class="loader-subtitle">loading</div>
+
+      <div class="progress-track">
+        <div id="progress" class="progress-bar"></div>
+      </div>
+
+      <div id="percent" class="percent">0%</div>
+    </div>
+  </div>
+
+  <main id="main" class="main-page hidden">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span>astro.MAIN</span>
+      </div>
+      <div class="status">ONLINE</div>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">MAIN PANEL</div>
+      <h1>Welcome to <span>astro.MAIN</span></h1>
+      <p>A simple black and purple dashboard ready for your own content.</p>
+
+      <div class="cards">
+        <div class="card">
+          <div class="card-label">STATUS</div>
+          <div class="card-value">Ready</div>
+          <div class="card-line"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">VERSION</div>
+          <div class="card-value">1.0</div>
+          <div class="card-line"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">ROUTE</div>
+          <div class="card-value">/load/main</div>
+          <div class="card-line"></div>
+        </div>
+      </div>
+
+      <button id="continue" class="continue-btn">Continue</button>
+    </section>
+
+    <footer>astro.MAIN • hosted on Render</footer>
+  </main>
+
+  <script src="/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: astro-main
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
