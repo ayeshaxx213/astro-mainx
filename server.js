@@ -7,24 +7,42 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static(__dirname));
 
+/*
+  =========================
+  ASTRO.MAIN USERS
+  =========================
+*/
+
 const USERS = {
-  ayesha: {
-    key: "ANGELBOUNDS-1WQ1-CHM7SM3P-WF",
+  astro: {
+    key: "ASTRO-MAIN-TEST-KEY",
     hwid: null
   }
 };
 
-// Website
+
+/*
+  =========================
+  MAIN WEBSITE
+  =========================
+*/
+
 app.get("/load/main", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// Authentication API
+
+/*
+  =========================
+  ASTRO.MAIN AUTH API
+  =========================
+*/
+
 app.post("/load/main", (req, res) => {
   const { username, key, hwid } = req.body || {};
 
   if (!username || !key || !hwid) {
-    return res.json({
+    return res.status(400).json({
       success: false,
       reason: "Missing username, key, or hwid"
     });
@@ -33,25 +51,29 @@ app.post("/load/main", (req, res) => {
   const user = USERS[username];
 
   if (!user) {
-    return res.json({
+    return res.status(401).json({
       success: false,
       reason: "Invalid username"
     });
   }
 
   if (user.key !== key) {
-    return res.json({
+    return res.status(401).json({
       success: false,
       reason: "Invalid key"
     });
   }
 
+  /*
+    First successful device becomes
+    the user's current HWID.
+  */
   if (user.hwid === null) {
     user.hwid = hwid;
   }
 
   if (user.hwid !== hwid) {
-    return res.json({
+    return res.status(403).json({
       success: false,
       reason: "HWID mismatch"
     });
@@ -60,13 +82,30 @@ app.post("/load/main", (req, res) => {
   return res.json({
     success: true,
     username: username,
-    message: "Authentication successful"
+    message: "astro.MAIN authentication successful",
+    config: {
+      enabled: true
+    }
   });
 });
+
+
+/*
+  =========================
+  404
+  =========================
+*/
 
 app.use((req, res) => {
   res.status(404).send("404 - Page not found");
 });
+
+
+/*
+  =========================
+  START SERVER
+  =========================
+*/
 
 app.listen(PORT, () => {
   console.log(`astro.MAIN running on port ${PORT}`);
