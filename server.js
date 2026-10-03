@@ -7,44 +7,24 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static(__dirname));
 
-/*
-  =========================
-  ASTRO.MAIN USERS
-  =========================
-*/
-
 const USERS = {
   astro: {
-    key: "ASTRO-MAIN-TEST-KEY",
-    hwid: null
+    key: process.env.ASTRO_KEY || "ASTRO-MAIN-TEST-KEY",
+    userId: null
   }
 };
-
-
-/*
-  =========================
-  MAIN WEBSITE
-  =========================
-*/
 
 app.get("/load/main", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-
-/*
-  =========================
-  ASTRO.MAIN AUTH API
-  =========================
-*/
-
 app.post("/load/main", (req, res) => {
-  const { username, key, hwid } = req.body || {};
+  const { username, key, userId } = req.body || {};
 
-  if (!username || !key || !hwid) {
+  if (!username || !key || !userId) {
     return res.status(400).json({
       success: false,
-      reason: "Missing username, key, or hwid"
+      reason: "Missing username, key, or userId"
     });
   }
 
@@ -64,24 +44,20 @@ app.post("/load/main", (req, res) => {
     });
   }
 
-  /*
-    First successful device becomes
-    the user's current HWID.
-  */
-  if (user.hwid === null) {
-    user.hwid = hwid;
+  if (user.userId === null) {
+    user.userId = String(userId);
   }
 
-  if (user.hwid !== hwid) {
+  if (user.userId !== String(userId)) {
     return res.status(403).json({
       success: false,
-      reason: "HWID mismatch"
+      reason: "Key is already bound to another Roblox account"
     });
   }
 
   return res.json({
     success: true,
-    username: username,
+    username,
     message: "astro.MAIN authentication successful",
     config: {
       enabled: true
@@ -89,23 +65,9 @@ app.post("/load/main", (req, res) => {
   });
 });
 
-
-/*
-  =========================
-  404
-  =========================
-*/
-
 app.use((req, res) => {
   res.status(404).send("404 - Page not found");
 });
-
-
-/*
-  =========================
-  START SERVER
-  =========================
-*/
 
 app.listen(PORT, () => {
   console.log(`astro.MAIN running on port ${PORT}`);
